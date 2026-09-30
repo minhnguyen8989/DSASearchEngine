@@ -26,24 +26,16 @@ def top_k_results(scores, k):
     if k <= 0:
         return []
 
-    heap = []
+    if not scores:
+        return []
 
-    for document_id, score in scores.items():
-        heapq.heappush(
-            heap,
-            (score, document_id)
-        )
-
-        if len(heap) > k:
-            heapq.heappop(heap)
-
-    results = [
-        (document_id, score)
-        for score, document_id in heap
-    ]
-
-    results.sort(
+    best_results = heapq.nsmallest(
+        k,
+        scores.items(),
         key=lambda item: (-item[1], item[0])
     )
 
-    return results
+    return [
+        (document_id, score)
+        for document_id, score in best_results
+    ]
