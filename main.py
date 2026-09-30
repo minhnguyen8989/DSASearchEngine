@@ -1,4 +1,16 @@
+from src.document_loader import load_documents
 from src.search_engine import SearchEngine
+from pathlib import Path
+
+def create_search_engine(directory):
+    engine = SearchEngine()
+
+    documents = load_documents(directory)
+
+    for document_id, text in documents.items():
+        engine.add_document(document_id, text)
+
+    return engine
 
 
 def display_menu():
@@ -81,3 +93,15 @@ def run_cli(engine=None):
 
         else:
             print("Invalid option. Please try again.")
+
+def main():
+    project_directory = Path(__file__).parent
+    documents_directory = project_directory / "documents"
+
+    engine = create_search_engine(documents_directory)
+
+    run_cli(engine)
+
+
+if __name__ == "__main__":
+    main()
