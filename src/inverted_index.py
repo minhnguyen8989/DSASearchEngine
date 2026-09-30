@@ -15,3 +15,14 @@ class InvertedIndex:
 
     def search(self, word):
         return self.index.get(word.lower(), set())
+
+    def search_all(self, words):
+        if not words:
+            return set()
+
+        result = self.search(words[0])
+
+        for word in words[1:]:
+            result = result.intersection(self.search(word))
+
+        return result
